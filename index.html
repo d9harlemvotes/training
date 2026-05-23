@@ -1133,6 +1133,46 @@
   }
   .submit-record-btn:hover { background: #234735; transform: translateY(-1px); }
   .submit-record-btn:active { transform: translateY(0); }
+  .submit-record-btn:disabled { background: #6a8676; cursor: not-allowed; transform: none; opacity: 0.85; }
+  .submit-record-btn.submitted { background: #1f5a3a; cursor: default; }
+  .submit-record-btn.submitted:hover { background: #1f5a3a; transform: none; }
+
+  /* Auto-submit fields (name + email) inside the results card */
+  .auto-submit-fields { margin: 0 0 14px; }
+  .auto-submit-fields label {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .auto-submit-fields .field-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .auto-submit-fields input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #b8c5be;
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: inherit;
+    background: #fff;
+    box-sizing: border-box;
+  }
+  .auto-submit-fields input:focus {
+    outline: 2px solid var(--green);
+    outline-offset: -1px;
+    border-color: var(--green);
+  }
+  #autoSubmitStatus {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    display: none;
+  }
+  #autoSubmitStatus.success { color: #1f5a3a; font-weight: 600; }
+  #autoSubmitStatus.error { color: #b00020; }
+  #autoSubmitStatus.info { color: var(--muted); }
 
   @media print {
     .submit-record-wrap { display: none !important; }
@@ -2591,10 +2631,14 @@ const MODULES = [
 // ============================================================
 // STATE
 // ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyM5Bo6Sd3wD_HDPXwPmQw-aKcdZ3ccBi0gGJ7NQ3y2eQ9xDkilT5UubzcXGtOnXTOM/exec';
+
 let state = {
   current: 0,
   completed: {}, // { moduleId: { score, total, date } }
   name: '',
+  email: '',
+  resultsSubmitted: false,
   introContent: null,
   introEditing: false
 };
@@ -2609,6 +2653,10 @@ async function loadState() {
   try {
     const n = await Store.get('d9hv_name');
     if (n) state.name = n;
+  } catch (e) {}
+  try {
+    const em = await Store.get('d9hv_email');
+    if (em) state.email = em;
   } catch (e) {}
   try {
     const intro = await Store.get('d9hv_intro');
@@ -2982,13 +3030,36 @@ function renderCertificate() {
   const passed = final && final.passed;
   let submitBlock = '';
   if (passed) {
+    const alreadySubmitted = !!state.resultsSubmitted;
+    const btnLabel = alreadySubmitted ? '\u2713 Results Submitted' : 'Submit Training Results \u2192';
+    const btnClass = alreadySubmitted ? 'submit-record-btn submitted' : 'submit-record-btn';
+    const btnDisabled = alreadySubmitted ? 'disabled' : '';
+    const statusHtml = alreadySubmitted
+      ? `<div id="autoSubmitStatus" class="success" style="display:block;">Your training results have been sent to D9 Harlem Votes\u2122 coalition leadership.</div>`
+      : `<div id="autoSubmitStatus"></div>`;
     submitBlock = `
       <div class="submit-record-wrap">
-        <div class="submit-record-card">
-          <h3 style="margin:0 0 8px; color:var(--green); font-size:18px;">One last step \u2014 submit your training record</h3>
-          <p style="margin:0 0 14px; font-size:14px; line-height:1.5;">Send your training record to coalition leadership so they can confirm you for activations. Your score, attempts, and proficiency are already filled in \u2014 you just need to add your name, contact info, organization, and the rest.</p>
-          <a class="submit-record-btn" id="submitRecordBtn" target="_blank" rel="noopener" href="#">Submit Your Training Record &rarr;</a>
-          <div style="margin-top:10px; font-size:12px; color:var(--muted);">Opens a Google Form in a new tab. Type your name above first so it pre-fills.</div>
+        <div class="submit-record-card" id="autoSubmitCard">
+          <h3 style="margin:0 0 8px; color:var(--green); font-size:18px;">Step 1 \u2014 Submit your training results</h3>
+          <p style="margin:0 0 14px; font-size:14px; line-height:1.5;">Your score, proficiency level, safety-question check, and number of attempts go straight to coalition leadership so they can confirm you for activations. Nothing for you to type \u2014 just your name and email.</p>
+          <div class="auto-submit-fields">
+            <label>
+              <div class="field-label">Full Name</div>
+              <input type="text" id="autoSubmitName" placeholder="First and last name" value="${escHtml(state.name || '')}" autocomplete="name" spellcheck="false">
+            </label>
+            <label>
+              <div class="field-label">Email</div>
+              <input type="email" id="autoSubmitEmail" placeholder="your@email.com" value="${escHtml(state.email || '')}" autocomplete="email" spellcheck="false">
+            </label>
+          </div>
+          <button class="${btnClass}" id="autoSubmitBtn" ${btnDisabled}>${btnLabel}</button>
+          ${statusHtml}
+        </div>
+        <div class="submit-record-card" style="margin-top:16px;">
+          <h3 style="margin:0 0 8px; color:var(--green); font-size:18px;">Step 2 \u2014 Complete your volunteer intake form</h3>
+          <p style="margin:0 0 14px; font-size:14px; line-height:1.5;">Tell coalition leadership your contact info, organization, chapter, emergency contact, t-shirt size, and confirm your volunteer attestations.</p>
+          <a class="submit-record-btn" id="submitRecordBtn" target="_blank" rel="noopener" href="#">Open Volunteer Intake Form \u2192</a>
+          <div style="margin-top:10px; font-size:12px; color:var(--muted);">Opens a Google Form in a new tab. Your name and training results pre-fill from the info above.</div>
         </div>
       </div>
     `;
@@ -3026,15 +3097,149 @@ function attachHandlers(m) {
     certName.oninput = async (e) => {
       state.name = e.target.value;
       await Store.set('d9hv_name', state.name);
-      // Refresh the submit-record link to include the new name
+      // Mirror into the auto-submit name field
+      const autoName = document.getElementById('autoSubmitName');
+      if (autoName && autoName.value !== state.name) autoName.value = state.name;
+      // Refresh the intake form link to include the new name
       const submitBtn = document.getElementById('submitRecordBtn');
       if (submitBtn) submitBtn.href = buildPrefillUrl();
     };
   }
-  // Wire up the submit-record button with the latest pre-fill URL
+  // Wire up the intake-form button with the latest pre-fill URL
   const submitBtn = document.getElementById('submitRecordBtn');
   if (submitBtn) {
     submitBtn.href = buildPrefillUrl();
+  }
+  // Wire up the auto-submit (training results) flow
+  wireUpAutoSubmit();
+}
+
+// Wire up the Step 1 auto-submit card: name + email inputs and the submit button.
+// Called both from attachHandlers (initial render) and from gradeQuiz (when cert
+// is injected after a passing quiz).
+function wireUpAutoSubmit() {
+  const nameInput = document.getElementById('autoSubmitName');
+  const emailInput = document.getElementById('autoSubmitEmail');
+  const btn = document.getElementById('autoSubmitBtn');
+  if (!btn) return; // certificate not on page
+
+  if (nameInput) {
+    nameInput.oninput = async (e) => {
+      state.name = e.target.value;
+      await Store.set('d9hv_name', state.name);
+      // Mirror into the cert name field
+      const certName = document.getElementById('certName');
+      if (certName && certName.value !== state.name) certName.value = state.name;
+      // Refresh the intake form link
+      const intakeBtn = document.getElementById('submitRecordBtn');
+      if (intakeBtn) intakeBtn.href = buildPrefillUrl();
+    };
+  }
+  if (emailInput) {
+    emailInput.oninput = async (e) => {
+      state.email = (e.target.value || '').trim();
+      await Store.set('d9hv_email', state.email);
+    };
+  }
+  // If already submitted in a prior session, leave the button in submitted state.
+  if (state.resultsSubmitted) return;
+  btn.onclick = submitResultsToSheet;
+}
+
+async function submitResultsToSheet() {
+  const nameInput  = document.getElementById('autoSubmitName');
+  const emailInput = document.getElementById('autoSubmitEmail');
+  const btn        = document.getElementById('autoSubmitBtn');
+  const statusEl   = document.getElementById('autoSubmitStatus');
+
+  function setStatus(msg, type) {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    statusEl.className = type || '';
+    statusEl.style.display = msg ? 'block' : 'none';
+  }
+
+  const name  = (nameInput  && nameInput.value  || '').trim();
+  const email = (emailInput && emailInput.value || '').trim();
+
+  if (!name)  { setStatus('Please enter your full name.', 'error'); return; }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    setStatus('Please enter a valid email address.', 'error');
+    return;
+  }
+
+  const final = state.completed && state.completed.final;
+  if (!final || !final.passed) {
+    setStatus('Final assessment results not found. Please complete the assessment first.', 'error');
+    return;
+  }
+
+  const score = final.score;
+  const total = final.total || 12;
+  let profLabel;
+  if (score === 12)       profLabel = 'Advanced \u2014 Mentor-Ready (12/12)';
+  else if (score >= 10)   profLabel = 'Advanced (10\u201311/12, all safety correct)';
+  else                    profLabel = 'Working (9/12, all safety correct)';
+
+  const today = new Date();
+  const dateStr = today.toISOString().split('T')[0];
+  const attempts = state.finalAttempts ? state.finalAttempts.length : 1;
+
+  const payload = {
+    fullName: name,
+    email: email,
+    dateCompleted: dateStr,
+    score: `${score}/${total}`,
+    safetyAllCorrect: final.safetyAllCorrect ? 'Yes' : 'No',
+    proficiencyLevel: profLabel,
+    attempts: String(attempts)
+  };
+
+  // Disable button + show progress
+  btn.disabled = true;
+  btn.textContent = 'Sending\u2026';
+  setStatus('Sending your results to coalition leadership\u2026', 'info');
+
+  try {
+    // Use text/plain content-type to avoid CORS preflight.
+    // Apps Script reads the body via e.postData.contents and parses JSON.
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+      redirect: 'follow'
+    });
+    let ok = response.ok;
+    try {
+      const result = await response.json();
+      if (result && result.result === 'success') ok = true;
+      else if (result && result.result === 'error') {
+        throw new Error(result.message || 'Apps Script returned an error');
+      }
+    } catch (parseErr) {
+      // If we can't parse JSON but the HTTP status was OK, treat as success.
+      if (!response.ok) throw parseErr;
+    }
+
+    if (!ok) throw new Error('Submission did not complete');
+
+    // Persist
+    state.name = name;
+    state.email = email;
+    state.resultsSubmitted = true;
+    await Store.set('d9hv_name', name);
+    await Store.set('d9hv_email', email);
+    await saveState();
+
+    // Lock the UI
+    btn.disabled = true;
+    btn.textContent = '\u2713 Results Submitted';
+    btn.classList.add('submitted');
+    setStatus('Your training results have been sent to D9 Harlem Votes\u2122 coalition leadership. You can now complete Step 2 below.', 'success');
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Submit Training Results \u2192';
+    setStatus('Sorry, something went wrong sending your results. Please check your internet connection and try again. (' + (err && err.message ? err.message : 'Unknown error') + ')', 'error');
   }
 }
 
@@ -3150,12 +3355,16 @@ function gradeQuiz(m) {
           certName.oninput = async (e) => {
             state.name = e.target.value;
             await Store.set('d9hv_name', state.name);
+            const autoName = document.getElementById('autoSubmitName');
+            if (autoName && autoName.value !== state.name) autoName.value = state.name;
             const sb = document.getElementById('submitRecordBtn');
             if (sb) sb.href = buildPrefillUrl();
           };
         }
         const submitBtn = document.getElementById('submitRecordBtn');
         if (submitBtn) submitBtn.href = buildPrefillUrl();
+        // Wire up Step 1 auto-submit (name, email, submit-to-sheet button)
+        wireUpAutoSubmit();
         document.getElementById('cert').scrollIntoView({ behavior: 'smooth' });
       }, 400);
     } else if (!safetyAllCorrect) {
@@ -3212,7 +3421,8 @@ document.getElementById('resetBtn').onclick = async () => {
   if (confirm('Reset all progress? This will clear completed modules and your name from the certificate. (Your edits to the Welcome screen will be kept \u2014 use the Reset button on that page to reset those separately.)')) {
     await Store.delete('d9hv_progress');
     await Store.delete('d9hv_name');
-    state = { current: 0, completed: {}, name: '', introContent: state.introContent, introEditing: false };
+    await Store.delete('d9hv_email');
+    state = { current: 0, completed: {}, name: '', email: '', resultsSubmitted: false, introContent: state.introContent, introEditing: false };
     renderAll();
   }
 };
