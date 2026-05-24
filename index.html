@@ -1543,26 +1543,27 @@ const Store = {
 const MODULES = [
 {
     id: 'intro',
-    title: 'Welcome Family!',
+    title: 'Welcome!',
     kicker: 'Start Here',
     isIntro: true,
     defaults: {
-      title: 'Training Overview: Welcome Family!',
+      title: 'Welcome!',
       subtitle: '',
-      tagline: 'Get ready to show up for Harlem. This self-paced training prepares D9 Harlem Votes\u2122 volunteers to support our neighbors with accurate, nonpartisan voter education rooted in trust, care, and community.\n\nD9 Harlem Votes\u2122 is committed to helping our neighbors register, understand their voting rights, and prepare for the polls during this NYS 2026 election cycle.',
+      tagline: 'Thank you for taking the time to learn and serve with us. We\u2019re so glad you\u2019re here. This is a time to come together, listen, learn, and leave more prepared to serve our community with care as Harlem residents get ready for the polls and make their voices heard.',
       whatThisIs: 'You can complete this training at your own pace on your phone, tablet, or computer. Your progress will save automatically, so you can step away and return whenever it works for you.\n\nWhether this is your first voter registration event or you\u2019ve been doing this work for years, this training is designed to help you feel prepared, informed, and confident as you join our Boots on the Ground Voter Activations across Harlem.',
       ourMission: 'Register voters. Educate voters. Prepare voters for the polls.\n\nD9 Harlem Votes\u2122 believes strong communities are built through civic participation.\n\nWe do not tell people who to vote for.\nWe prepare them to vote.',
       preview1: 'Who we are. Who we serve. Why this work matters in Harlem right now.',
       preview2: 'How we represent the coalition. Nonpartisan posture. The Activation Lead. Inviting connection. Brand discipline at the table and online.',
-      preview3: 'Stay Alert \u2014 the safety rules every volunteer must know before stepping up to a NYC street activation table.',
+      preview3: 'Community Safety \u2014 the safety rules every volunteer must know before stepping up to a NYC street activation table.',
       preview4: 'Coalition operations \u2014 Activation Lead, chain of custody, hub-based delivery, end-of-activation reporting. The work that makes our registrations count.',
-      preview5: 'Communicate with Care \u2014 holding space for the hard moments. Discouragement. Fear. Family pressure. The law that doesn\u2019t bend.',
-      preview6: 'The 2026 elections \u2014 Primary, General, Early Voting, what\u2019s on the ballot, closed-primary rules.',
-      preview7: 'The laws that protect our voters\u2019 rights \u2014 VRA, NY VRA, HAVA, NY GRA, the SAVE Act, and the 2021 re-registration law.',
-      preview8: 'Who can register \u2014 eligibility, the citizenship gate, residency, parole, and the situations every volunteer should be ready for.',
-      preview9: 'How to complete the registration form \u2014 box by box, Options A and B, the deadline that cannot be missed.',
-      preview10: 'Prepare for the polls \u2014 find your site, what to bring, check your registration, track your mail ballot.',
-      preview11: 'Know your rights at the polls \u2014 the affidavit ballot, asking for the judge, signature cure, disability access.'
+      preview5: 'Meet Our Neighbors \u2014 nine neighbors whose stories may feel familiar to the people and community members you meet when you are serving as a volunteer on voter registration activation days with us.',
+      preview6: 'Communicate with Care \u2014 holding space for the hard moments. Discouragement. Fear. Family pressure. The law that doesn\u2019t bend.',
+      preview7: 'The 2026 elections \u2014 Primary, General, Early Voting, what\u2019s on the ballot, closed-primary rules.',
+      preview8: 'The laws that protect our voters\u2019 rights \u2014 VRA, NY VRA, HAVA, NY GRA, the SAVE Act, and the 2021 re-registration law.',
+      preview9: 'Who can register \u2014 eligibility, the citizenship gate, residency, parole, and the situations every volunteer should be ready for.',
+      preview10: 'How to complete the registration form \u2014 box by box, Options A and B, the deadline that cannot be missed.',
+      preview11: 'Prepare for the polls \u2014 find your site, what to bring, check your registration, track your mail ballot.',
+      preview12: 'Know your rights at the polls \u2014 the affidavit ballot, asking for the judge, signature cure, disability access.'
     },
     quiz: []
   },
@@ -2053,9 +2054,9 @@ const MODULES = [
     id: 'meet-them',
     isMeetThem: true,
     phaseStart: 'Connect to Community',
-    title: 'Meet Our Community',
+    title: 'Meet Our Neighbors',
     kicker: 'Module 5',
-    lede: 'These are nine of the people you may meet at our tables. Before we go any further, take a minute with each one. Trust your instinct \u2014 there are no wrong answers yet.',
+    lede: 'These are nine neighbors whose stories may feel familiar to the people and community members you meet when you are serving as a volunteer on voter registration activation days with us. Take a moment to read each story and notice what comes up for you. As you read, think about how their experiences might shape the way they feel about voter registration, early voting, and showing up to the polls on Election Day. This is a chance to connect more deeply with the community and to reflect on experiences you may or may not already know.',
     body: '',
     cards: [
       {
@@ -2101,7 +2102,7 @@ const MODULES = [
       {
         id: 'deacon',
         topic: 'Civic class / voter protections in NYS',
-        name: 'Deacon Johnson Teaches',
+        name: 'Deacon Johnson Empowers',
         tagline: 'A voter for nearly 50 years. The federal VRA rose and fell in his lifetime. New York built its own.',
         situation: 'Deacon Johnson is 67. He has voted in every election since 1977. He has watched the federal Voting Rights Act be passed, expanded, gutted in Shelby County (2013), and weakened again in Callais (April 2026). The federal protection has been a moving target his whole adult life.',
         question: 'In New York, officials must get approval from the State Attorney General before changing polling places in communities with histories of voting discrimination.',
@@ -3614,7 +3615,7 @@ function buildMeetThemReveal() {
   if (answeredCount === 0) {
     return `
       <div class="mt-reveal">
-        <div class="mt-reveal-header">Looking Back at Meet Our Community</div>
+        <div class="mt-reveal-header">Looking Back at Meet Our Neighbors</div>
         <div class="mt-reveal-empty">No answers yet. Go back to Module 5 to fill them in &mdash; then return here to see your answers alongside what you&rsquo;ve learned.</div>
       </div>
     `;
@@ -3625,7 +3626,7 @@ function buildMeetThemReveal() {
 
   return `
     <div class="mt-reveal">
-      <div class="mt-reveal-header">Looking Back at Meet Our Community</div>
+      <div class="mt-reveal-header">Looking Back at Meet Our Neighbors</div>
       <div class="mt-reveal-sub">Here&rsquo;s how you answered when you first met these nine neighbors &mdash; alongside what you know now. ${matchCount} of ${mt.cards.length} matched on the first read. The training did the rest.</div>
       ${mt.cards.map(c => {
         const yours = answers[c.id];
