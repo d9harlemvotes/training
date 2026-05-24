@@ -2053,7 +2053,7 @@ const MODULES = [
     id: 'meet-them',
     isMeetThem: true,
     phaseStart: 'Connect to Community',
-    title: 'Meet Them',
+    title: 'Meet Our Community',
     kicker: 'Module 5',
     lede: 'These are nine of the people you may meet at our tables. Before we go any further, take a minute with each one. Trust your instinct \u2014 there are no wrong answers yet.',
     body: '',
@@ -3614,8 +3614,8 @@ function buildMeetThemReveal() {
   if (answeredCount === 0) {
     return `
       <div class="mt-reveal">
-        <div class="mt-reveal-header">Looking Back at Meet Them</div>
-        <div class="mt-reveal-empty">No Meet Them answers yet. Go back to Module 5 to fill them in &mdash; then return here to see your answers alongside what you&rsquo;ve learned.</div>
+        <div class="mt-reveal-header">Looking Back at Meet Our Community</div>
+        <div class="mt-reveal-empty">No answers yet. Go back to Module 5 to fill them in &mdash; then return here to see your answers alongside what you&rsquo;ve learned.</div>
       </div>
     `;
   }
@@ -3625,7 +3625,7 @@ function buildMeetThemReveal() {
 
   return `
     <div class="mt-reveal">
-      <div class="mt-reveal-header">Looking Back at Meet Them</div>
+      <div class="mt-reveal-header">Looking Back at Meet Our Community</div>
       <div class="mt-reveal-sub">Here&rsquo;s how you answered when you first met these nine neighbors &mdash; alongside what you know now. ${matchCount} of ${mt.cards.length} matched on the first read. The training did the rest.</div>
       ${mt.cards.map(c => {
         const yours = answers[c.id];
