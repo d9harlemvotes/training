@@ -3404,17 +3404,6 @@ function renderIntroView() {
         </div>
         <div class="lesson">
           <button class="edit-toggle-btn" id="introEditBtn">Edit this page</button>
-          <details class="module-preview module-preview--intro" open>
-            <summary><span class="mp-title">What This Training Is</span><span class="mp-chev" aria-hidden="true">+</span></summary>
-            <div class="mp-body">${fmt(c.whatThisIs)}</div>
-          </details>
-          <details class="module-preview module-preview--intro">
-            <summary><span class="mp-title">Our Mission</span><span class="mp-chev" aria-hidden="true">+</span></summary>
-            <div class="mp-body">${fmt(c.ourMission)}</div>
-          </details>
-          <h3 style="font-size:17px; margin:36px 0 12px; color:var(--green-deep); letter-spacing:1px; text-transform:uppercase;">What You'll Learn in Each Module</h3>
-          <div class="mp-hint">Tap any module to expand its description.</div>
-          ${moduleHtml}
           <button class="start-btn" id="introStartBtn" style="display:block; margin:40px auto 0;">Start Training &rarr;</button>
         </div>
       </div>
