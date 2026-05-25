@@ -3120,8 +3120,10 @@ function renderSidebar() {
     if (isGate) cls.push('gate-item');
     if (isFinal) cls.push('final-item');
     let numHtml;
-    if (isIntro) {
+      if (isIntro) {
       numHtml = '<div class="num"><span>i</span></div>';
+    } else if (isOverview) {
+      numHtml = '<div class="num"><span>0</span></div>';
     } else if (isResource) {
       numHtml = '<div class="num"><span>\u00a7</span></div>';
     } else if (isGate) {
