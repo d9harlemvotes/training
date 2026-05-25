@@ -3796,7 +3796,7 @@ function renderMeetThemView(m) {
 async function saveIntroEdits() {
   const fields = ['title','subtitle','tagline','whatThisIs','ourMission'];
   // Add preview fields dynamically
-  const lessons = MODULES.filter(m => !m.isIntro && !m.isResource && !m.isGate);
+  const lessons = MODULES.filter(m => !m.isIntro && !m.isResource && !m.isGate && !m.isOverview);
   lessons.forEach((m, i) => fields.push('preview' + (i + 1)));
   const data = {};
   fields.forEach(f => {
