@@ -3156,7 +3156,7 @@ function renderSidebar() {
     list.appendChild(li);
   });
   // Progress: exclude intro, resource, and gate modules from totals
-  const trackable = MODULES.filter(m => !m.isIntro && !m.isResource && !m.isGate && !m.isFinal);
+  const trackable = MODULES.filter(m => !m.isIntro && !m.isResource && !m.isGate && !m.isFinal && !m.isOverview);
   const done = trackable.filter(m => state.completed[m.id]).length;
   const total = trackable.length;
   document.getElementById('progFill').style.width = (done / total * 100) + '%';
