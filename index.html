@@ -259,6 +259,25 @@
   border-color: var(--green, #2F5F48);
 }
   }
+  /* Final Readiness Review bubble — green checkmark at end of strip */
+  .module-list li.final-item .num {
+    border: 2px solid var(--green, #2F5F48);
+    color: var(--green, #2F5F48);
+    background: #fff;
+    font-family: 'Georgia', serif;
+    font-style: italic;
+  }
+  .module-list li.final-item.active .num {
+    background: var(--green, #2F5F48);
+    color: #fff;
+    border-color: var(--green, #2F5F48);
+    box-shadow: 0 0 0 3px rgba(47, 95, 72, 0.15);
+  }
+  .module-list li.final-item.complete .num {
+    background: var(--green, #2F5F48);
+    color: #fff;
+    border-color: var(--green, #2F5F48);
+  }
   /* Meet Them — 9-card diagnostic */
   .mt-intro {
     background: #f5f1e8;
@@ -3058,20 +3077,23 @@ function renderSidebar() {
     const li = document.createElement('li');
     const isIntro = m.isIntro;
     const isResource = m.isResource;
-    const isGate = m.isGate;
+   const isGate = m.isGate;
+    const isFinal = m.isFinal;
     const cls = [];
     if (i === state.current) cls.push('active');
     if (state.completed[m.id]) cls.push('complete');
     if (isIntro) cls.push('intro-item');
     if (isResource) cls.push('resource-item');
     if (isGate) cls.push('gate-item');
-    li.className = cls.join(' ');
+    if (isFinal) cls.push('final-item');
     let numHtml;
     if (isIntro) {
       numHtml = '<div class="num"><span>i</span></div>';
     } else if (isResource) {
       numHtml = '<div class="num"><span>\u00a7</span></div>';
     } else if (isGate) {
+      numHtml = `<div class="num"><span>✓</span></div>`;
+    } else if (isFinal) {
       numHtml = `<div class="num"><span>✓</span></div>`;
     } else {
       moduleNum++;
