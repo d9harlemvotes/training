@@ -3265,7 +3265,7 @@ function getIntroContent() {
 function renderIntroView() {
   const content = document.getElementById('content');
   const c = getIntroContent();
-  const lessons = MODULES.filter(m => !m.isIntro && !m.isResource && !m.isGate);
+  const lessons = MODULES.filter(m => !m.isIntro && !m.isResource && !m.isGate && !m.isOverview);
 
   // Helper to render text content with newlines as <br> and bullets
   function fmt(txt) {
