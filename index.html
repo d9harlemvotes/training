@@ -1988,7 +1988,7 @@ const MODULES = [
     isGate: true,
     gateNum: 1,
     title: "Looks Like You're Ready to Serve",
-    kicker: 'Gate 1',
+    kicker: 'Readiness Check',
     lede: '',
     body: '',
     quiz: [
@@ -3391,13 +3391,13 @@ function renderGateQuiz(m) {
 
   let html = `
     <div class="module-header">
-      <h1 class="serif">Gate 1: Ready Check</h1>
+      <h1 class="serif">Readiness Check: Ready Check</h1>
       <div class="lede">A quick check on the foundation. Answer all 5 questions. You need <strong>${passThreshold} of ${total}</strong> correct to move into Part II. Unlimited retakes.</div>
     </div>
     <div class="lesson">
       ${attemptBanner}
       <div class="quiz" id="quiz" style="margin-top:0;">
-        <div class="quiz-header">Gate 1 &mdash; Part I Readiness</div>
+        <div class="quiz-header">Readiness Check &mdash; Part I Readiness</div>
         <div class="quiz-sub">Drawn from Mission Minded, How We Move, Community Safety, and Making Our Registrations Count.</div>
         ${m.quiz.map((q, qi) => `
           <div class="q-block" data-q="${qi}">
@@ -3486,7 +3486,7 @@ function gradeGateQuiz(m) {
     resultEl.className = 'quiz-result fail';
     resultEl.innerHTML = `
       <strong>You scored ${score} of ${total}.</strong>
-      <div style="margin-top:8px;">You need ${passThreshold} of ${total} to move on. Review Modules 1&ndash;4 and try again. Unlimited retakes &mdash; every attempt is logged.</div>
+      <div style="margin-top:8px;">You need ${passThreshold} of ${total} to move on. Review Modules &ndash;4 and try again. Unlimited retakes &mdash; every attempt is logged.</div>
       <button id="gateRetakeBtn" style="background:#1A1A1A; color:#fff; font-weight:600; font-size:15px; padding:11px 26px; border-radius:6px; border:none; cursor:pointer; margin-top:14px; letter-spacing:0.02em;">Try again</button>
     `;
     if (checkBtn) checkBtn.style.display = 'none';
