@@ -3406,7 +3406,7 @@ function renderIntroView() {
         </div>
       </div>
     `;
-    document.getElementById('introEditBtn').onclick = () => { state.introEditing = true; renderIntroView(); window.scrollTo({top: 0, behavior: 'smooth'}); };
+    
     document.getElementById('introStartBtn').onclick = () => {
       const idx = MODULES.findIndex(m => !m.isIntro && !m.isResource && !m.isGate);
       state.current = idx;
