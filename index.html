@@ -3110,10 +3110,12 @@ function renderSidebar() {
     const isResource = m.isResource;
    const isGate = m.isGate;
     const isFinal = m.isFinal;
+    const isOverview = m.isOverview;
     const cls = [];
     if (i === state.current) cls.push('active');
     if (state.completed[m.id]) cls.push('complete');
     if (isIntro) cls.push('intro-item');
+    if (isOverview) cls.push('intro-item');
     if (isResource) cls.push('resource-item');
     if (isGate) cls.push('gate-item');
     if (isFinal) cls.push('final-item');
