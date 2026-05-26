@@ -4052,6 +4052,15 @@ function renderCertificate() {
 }
 
 function attachHandlers(m) {
+  const certBtn = document.getElementById('continueToCertBtn');
+  if (certBtn) {
+    certBtn.onclick = async () => {
+      state.viewingCert = true;
+      await saveState();
+      renderAll();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+  }
   const prev = document.getElementById('prevBtn');
   const next = document.getElementById('nextBtn');
   if (prev) prev.onclick = () => { if (state.current > 0) { state.current--; renderAll(); window.scrollTo({top: 0, behavior: 'smooth'}); } };
