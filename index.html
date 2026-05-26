@@ -4402,7 +4402,7 @@ document.getElementById('resetBtn').onclick = async () => {
     await Store.delete('d9hv_progress');
     await Store.delete('d9hv_name');
     await Store.delete('d9hv_email');
-    state = { current: 0, completed: {}, name: '', email: '', resultsSubmitted: false, introContent: state.introContent, introEditing: false };
+    state = { current: 0, completed: {}, name: '', email: '', resultsSubmitted: false, viewingCert: false, introContent: state.introContent, introEditing: false };
     renderAll();
   }
 };
