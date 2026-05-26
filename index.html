@@ -3399,9 +3399,13 @@ function renderContent() {
     <button class="nav-btn" id="nextBtn" ${state.current === MODULES.length - 1 ? 'disabled' : ''}>Next module \u2192</button>
   </div>`;
 
-  // Certificate (if final and passed both gates)
+  // Final passed — show video page first, then cert page after Continue (Option A flow)
   if (isFinal && isComplete && state.completed.final.passed) {
-    html += renderCertificate();
+    if (state.viewingCert) {
+      html += renderCertificate();
+    } else {
+      html += renderFinalVideoPage();
+    }
   }
 
   content.innerHTML = html;
