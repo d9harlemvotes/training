@@ -4036,16 +4036,15 @@ function renderCertificate() {
   }
   return `
     <div class="cert-wrap" id="cert">
-      <div class="cert">
-        <div class="cert-name">
-          <input type="text" id="certName" placeholder="Type your full name" value="${escHtml(state.name || '')}" autocomplete="off" spellcheck="false">
-        </div>
-        <div class="cert-date">Completed ${date}</div>
+      <div class="cert" style="position:relative; width:100%; max-width:1000px; margin:0 auto; aspect-ratio: 1999 / 1545; background:#fff;">
+        <img src="certificate.png" alt="D9 Harlem Votes\u2122 Certificate of Completion" style="position:absolute; inset:0; width:100%; height:100%; display:block;">
+        <input type="text" id="certName" placeholder="Type your full name" value="${escHtml(state.name || '')}" autocomplete="off" spellcheck="false" style="position:absolute; left:50%; top:45%; transform:translate(-50%, -50%); width:55%; text-align:center; font-family:Georgia,'Times New Roman',serif; font-size:clamp(20px, 3.2vw, 38px); font-weight:600; color:#1A1A1A; background:transparent; border:none; border-bottom:1px solid #999; padding:4px 8px; outline:none;">
+        <div class="cert-date" style="position:absolute; left:50%; top:71%; transform:translateX(-50%); font-size:clamp(11px, 1.2vw, 14px); color:#1A1A1A; letter-spacing:0.05em;">Completed ${date}</div>
       </div>
-      <div class="cert-actions">
+      <div class="cert-actions" style="text-align:center; margin-top:18px;">
         <button class="print-btn" onclick="window.print()">Print Certificate</button>
       </div>
-      <div class="cert-hint">Print in landscape orientation for best results.</div>
+      <div class="cert-hint" style="text-align:center; font-size:13px; color:#6b6b6b; margin-top:8px;">Print in landscape orientation for best results.</div>
       ${submitBlock}
     </div>
   `;
