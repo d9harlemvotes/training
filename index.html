@@ -4354,8 +4354,22 @@ function gradeQuiz(m) {
         });
       }
       setTimeout(() => {
-        const cert = renderCertificate();
-        document.getElementById('content').insertAdjacentHTML('beforeend', cert);
+        state.viewingCert = false; // first pass: show video, not cert
+        saveState();
+        const videoHtml = renderFinalVideoPage();
+        document.getElementById('content').insertAdjacentHTML('beforeend', videoHtml);
+        const continueBtn = document.getElementById('continueToCertBtn');
+        if (continueBtn) {
+          continueBtn.onclick = async () => {
+            state.viewingCert = true;
+            await saveState();
+            renderAll();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+          };
+        }
+        const slot = document.getElementById('finalVideoSlot');
+        if (slot) slot.scrollIntoView({ behavior: 'smooth' });
+        return;
         const certName = document.getElementById('certName');
         if (certName) {
           certName.oninput = async (e) => {
