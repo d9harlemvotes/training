@@ -3805,15 +3805,7 @@ function renderMeetThemView(m) {
                 <div class="mt-front-hint ${answered ? '' : 'hidden'}" data-hint="${c.id}">Click card to meet our neighbor &rarr;</div>
               </div>
               <div class="mt-card-face mt-card-back">
-                <div class="mt-topic">${c.topic}</div>
-                <div class="mt-name">${c.name}</div>
-                <div class="mt-tagline"><em>${c.tagline}</em></div>
-                <div class="mt-card-result ${answered ? (matched ? 'match' : 'mismatch') : 'hidden'}" data-result="${c.id}">
-                  <span class="mt-card-icon">${answered ? (matched ? '\u2713' : '\u2717') : ''}</span>
-                  <span>${answered ? `You said <strong>${yoursLabel}</strong>. Correct: <strong>${correctLabel}</strong>.` : ''}</span>
-                </div>
-                <div class="mt-situation">${c.situation}</div>
-                <div class="mt-why"><strong>Why:</strong> ${c.why}</div>
+                <img src="${c.image}" alt="${c.name}" style="width:100%; height:auto; display:block; border-radius:8px;">
               </div>
             </div>
           </div>
