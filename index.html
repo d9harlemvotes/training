@@ -3804,8 +3804,17 @@ function renderMeetThemView(m) {
                 </div>
                 <div class="mt-front-hint ${answered ? '' : 'hidden'}" data-hint="${c.id}">Click card to meet our neighbor &rarr;</div>
               </div>
-              <div class="mt-card-face mt-card-back">
-                <img src="${c.image}" alt="${c.name}" style="width:100%; height:auto; display:block; border-radius:8px;">
+              <div class="mt-card-face mt-card-back" style="font-size:16px; line-height:1.55;">
+                <img src="${c.image}" alt="${c.name}" style="width:100%; height:auto; display:block; border-radius:8px; margin-bottom:14px;">
+                <div class="mt-topic" style="font-size:13px; letter-spacing:0.05em; text-transform:uppercase; color:#CB0606; font-weight:700; margin-bottom:6px;">${c.topic}</div>
+                <div class="mt-name" style="font-family:Georgia,serif; font-size:22px; font-weight:700; margin-bottom:4px;">${c.name}</div>
+                <div class="mt-tagline" style="font-size:15px; color:#4a4a4a; margin-bottom:12px;"><em>${c.tagline}</em></div>
+                <div class="mt-card-result ${answered ? (matched ? 'match' : 'mismatch') : 'hidden'}" data-result="${c.id}" style="font-size:15px; margin-bottom:12px;">
+                  <span class="mt-card-icon">${answered ? (matched ? '\u2713' : '\u2717') : ''}</span>
+                  <span>${answered ? `You said <strong>${yoursLabel}</strong>. Correct: <strong>${correctLabel}</strong>.` : ''}</span>
+                </div>
+                <div class="mt-situation" style="font-size:16px; line-height:1.6; margin-bottom:12px;">${c.situation}</div>
+                <div class="mt-why" style="font-size:16px; line-height:1.6;"><strong>Why:</strong> ${c.why}</div>
               </div>
             </div>
           </div>
