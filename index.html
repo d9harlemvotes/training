@@ -3981,6 +3981,19 @@ function buildPrefillUrl() {
   return FORM_BASE + '?' + params.toString();
 }
 
+function renderFinalVideoPage() {
+  return `
+    <div class="final-video-wrap" style="margin-top:32px; text-align:center;">
+      <h2 style="font-family:Georgia,serif; font-size:26px; color:#2F5F48; margin-bottom:8px;">Congratulations!</h2>
+      <p style="font-size:16px; color:#4a4a4a; margin-bottom:20px;">You\u2019re approved to volunteer at a D9 Harlem Votes&trade; activation table.</p>
+      <div id="finalVideoSlot">
+        <!-- PASTE VIDEO IFRAME / <video> TAG HERE -->
+      </div>
+      <button id="continueToCertBtn" style="background:#CB0606; color:#fff; font-weight:600; font-size:16px; padding:14px 32px; border-radius:6px; border:none; cursor:pointer; margin-top:28px; letter-spacing:0.02em;">Continue to your certificate \u2192</button>
+    </div>
+  `;
+}
+
 function renderCertificate() {
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   const final = state.completed && state.completed.final;
