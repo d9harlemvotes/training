@@ -4719,19 +4719,20 @@ const MODULES = [
         correct: 2,
         why: 'The Help America Vote Act, HAVA (2002), requires every voter who claims to be registered to receive a provisional/affidavit ballot. A designated Provisional Judge at each precinct administers the process.'
       },
-      // Q7 — CRITICAL SAFETY — Voter signature only (M8)
+      // Q7 \xe2\x80\x94 Youth pre-registration (M9)
       {
-        q: '[CRITICAL SAFETY] A voter has finished filling out their form and asks you to sign it for them as their "helper" because their handwriting is shaky. Which box are they pointing to, and what do you do?',
+        q: 'A 17-year-old walks up to your table and says, \u201cI want to register to vote.\u201d What\u2019s the best response?',
         opts: [
-          'Box 14. Sign as their party witness.',
-          'Box 16. Politely decline \u2014 the signature line belongs to the voter alone. Volunteers help with everything else, never the signature.',
-          'Box 1. Sign in their place to confirm they\u2019re a citizen.',
-          'Box 12. Sign as the date keeper.'
+          '"You\u2019ll need to come back with a parent, you\u2019re a minor."',
+          '"At 16 or 17 you can pre-register right now, and you\u2019re automatically registered at 18. To actually vote you have to be 18 by the election. When\u2019s your birthday, so I can tell you what you\u2019re eligible for?"',
+          '"Before you register, you really should learn who\u2019s on the ballot and make sure you\u2019re ready."',
+          '"Awesome, let\u2019s get you signed up right now!"'
         ],
         correct: 1,
-        safety: true,
-        why: 'Box 16 is the registrant\u2019s signature. Only the voter signs. A volunteer who signs \u2014 even with permission, even to help \u2014 can invalidate the form.'
+        why: 'At 16 or 17 a young person can pre-register right now, with no adult permission required, and they are automatically registered once they turn 18. To vote they must be 18 by that election. Asking for the birthday tells you what they are eligible for: pre-registration today, voting on Golden Saturday, June 13, if they are 18 by then, and the General Election on November 3, 2026 once they turn 18. Option A is wrong because no parent is needed to pre-register. Option C deters them. Option D skips the eligibility facts and signs them up without checking.'
       },
+
+
       // Q8 — First-time voter ID rule (M9)
       {
         q: 'A first-time NY voter registered without giving their NY ID number or Social Security number on the form. What must they bring to the poll site?',
