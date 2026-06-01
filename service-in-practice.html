@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service in Practice | D9 Harlem Votes&trade;</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crimson:#CB0606; --ink:#1A1A1A; --green:#2F5F48; --greentint:#e1f0e7; --redtint:#fbe3e3;
+    --amber:#E6A700; --ambertint:#FFF3C4; --amberink:#946200;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:#fff; color:var(--ink); font-family:'Source Serif 4',Georgia,serif; padding:28px 18px 80px; }
+
+  .sv-sample{ max-width:760px; margin:0 auto 22px; background:var(--greentint); border:1px solid rgba(47,95,72,.4); border-left:5px solid var(--green); border-radius:11px; padding:13px 16px; font-family:'Inter',Arial,sans-serif; font-size:13.5px; line-height:1.5; color:#234b39; }
+  .sv-sample strong{color:var(--green);}
+
+  .sv-wrap{max-width:760px; margin:0 auto; font-family:'Inter',Arial,Helvetica,sans-serif; color:var(--ink);}
+  .sv-kicker{font-family:'Inter',Arial,sans-serif; font-weight:800; letter-spacing:2px; text-transform:uppercase; font-size:clamp(12px,2.4vw,14px); color:var(--crimson); margin:0 0 6px;}
+  .sv-lede{font-family:'Source Serif 4',Georgia,serif; font-weight:700; font-size:clamp(20px,4vw,26px); color:var(--ink); margin:0 0 12px;}
+  .sv-intro{font-family:'Source Serif 4',Georgia,serif; font-size:clamp(17px,3.4vw,20px); line-height:1.5; color:#2a2a2a; margin:0 0 12px;}
+  .sv-intro-2{font-family:'Source Serif 4',Georgia,serif; font-style:italic; font-size:clamp(15px,3vw,17px); line-height:1.5; color:#3a3a3a; margin:0 0 16px;}
+
+  .sv-legend{display:flex; gap:16px; flex-wrap:wrap; margin:0 0 22px; font-family:'Inter',Arial,sans-serif; font-size:13px; color:#3a3a3a;}
+  .sv-leg{display:flex; align-items:center; gap:7px;}
+  .sv-swatch{width:13px; height:13px; border-radius:50%;}
+  .sv-swatch.g{background:var(--green);} .sv-swatch.y{background:var(--amber);} .sv-swatch.r{background:var(--crimson);}
+
+  .sv-card-shell{background:#fff; border:1px solid rgba(26,26,26,.12); border-radius:14px; padding:clamp(16px,3vw,26px); box-shadow:0 14px 36px rgba(26,26,26,.10);}
+
+  .sv-pickhead{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:0 0 16px;}
+  .sv-pickhead h4{font-family:'Inter',Arial,sans-serif; font-weight:800; font-size:clamp(17px,3.4vw,21px); color:var(--ink); margin:0;}
+  .sv-count{font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--green);}
+  .sv-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:560px){ .sv-grid{grid-template-columns:1fr;} }
+  .sv-person{position:relative; text-align:left; cursor:pointer; font-family:inherit; background:#fff; border:2px solid rgba(26,26,26,.16); border-radius:12px; padding:15px 16px; transition:border-color .12s ease, transform .06s ease, box-shadow .12s ease;}
+  .sv-person:hover{border-color:var(--ink); box-shadow:0 8px 20px rgba(26,26,26,.08);}
+  .sv-person:active{transform:translateY(1px);}
+  .sv-person:focus-visible{outline:3px solid var(--green); outline-offset:2px;}
+  .sv-pname{font-family:'Inter',Arial,sans-serif; font-weight:800; font-size:15px; color:var(--ink); margin:0 0 4px; display:flex; align-items:center; gap:7px;}
+  .sv-ptease{font-family:'Source Serif 4',Georgia,serif; font-size:15px; line-height:1.35; color:#444; margin:0;}
+  .sv-safetytag{font-family:'Inter',sans-serif; font-weight:800; font-size:9.5px; letter-spacing:1px; text-transform:uppercase; color:#fff; background:var(--crimson); padding:2px 6px; border-radius:5px;}
+  .sv-person.sv-donep{border-color:var(--green); background:var(--greentint);}
+  .sv-person.sv-donep .sv-donecheck{position:absolute; top:12px; right:13px; color:var(--green); font-weight:800; font-size:18px;}
+
+  .sv-back{font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:13px; color:#5a5a5a; background:none; border:none; cursor:pointer; padding:0; margin:0 0 12px;}
+  .sv-back:hover{color:var(--ink);}
+  .sv-scene{background:#f4f3f1; border-radius:12px; padding:16px 18px; margin:0 0 6px; display:flex; gap:12px; align-items:flex-start;}
+  .sv-who{flex:0 0 auto; width:40px; height:40px; border-radius:50%; background:var(--ink); color:#fff; font-family:'Inter',sans-serif; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; letter-spacing:.5px;}
+  .sv-say{font-family:'Source Serif 4',Georgia,serif; font-size:clamp(17px,3.4vw,21px); line-height:1.42; color:#1f1f1f; margin:0;}
+
+  .sv-step{display:flex; align-items:center; gap:9px; margin:20px 0 11px;}
+  .sv-stepnum{width:24px; height:24px; border-radius:50%; background:var(--ink); color:#fff; font-family:'Inter',sans-serif; font-weight:800; font-size:12px; display:flex; align-items:center; justify-content:center;}
+  .sv-stepnum.sv-done{background:var(--green);}
+  .sv-steplabel{font-family:'Inter',Arial,sans-serif; font-size:13px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#3a3a3a;}
+
+  .sv-named{font-family:'Source Serif 4',Georgia,serif; font-size:clamp(16px,3vw,18px); color:var(--green); background:var(--greentint); border:2px solid var(--green); border-radius:10px; padding:11px 14px; margin:0; display:flex; align-items:center; gap:8px;}
+  .sv-named .sv-tick{font-weight:800;}
+
+  .sv-opts{display:flex; flex-direction:column; gap:11px;}
+  .sv-opt{text-align:left; width:100%; cursor:pointer; font-family:inherit; background:#fff; border:2px solid rgba(26,26,26,.18); border-radius:11px; padding:13px 16px; transition:border-color .12s ease, background .12s ease, transform .06s ease;}
+  .sv-opt:hover{border-color:var(--ink);}
+  .sv-opt:active{transform:translateY(1px);}
+  .sv-opt:focus-visible{outline:3px solid var(--green); outline-offset:2px;}
+  .sv-opt .sv-txt{font-family:'Source Serif 4',Georgia,serif; font-size:clamp(15px,3vw,17px); line-height:1.4; color:#2a2a2a;}
+  .sv-opt.sv-good{border-color:var(--green); background:var(--greentint); cursor:default; box-shadow:0 0 0 3px rgba(47,95,72,.30);}
+  .sv-opt.sv-warn{border-color:var(--amber); background:var(--ambertint);}
+  .sv-opt.sv-bad{border-color:var(--crimson); background:var(--redtint); opacity:.92;}
+
+  .sv-feedback{margin-top:14px; border-radius:11px; overflow:hidden; max-height:0; transition:max-height .25s ease;}
+  .sv-feedback.sv-show{max-height:700px;}
+  .sv-fb-inner{padding:14px 17px; border-left:5px solid var(--green); background:var(--greentint);}
+  .sv-fb-inner.sv-fb-warn{border-left-color:var(--amber); background:var(--ambertint);}
+  .sv-fb-inner.sv-fb-bad{border-left-color:var(--crimson); background:var(--redtint);}
+  .sv-fb-title{font-family:'Inter',Arial,sans-serif; font-weight:800; font-size:14.5px; letter-spacing:.4px; margin:0 0 5px; color:var(--ink);}
+  .sv-fb-title.sv-t-warn{color:var(--amberink);}
+  .sv-fb-title.sv-t-bad{color:var(--crimson);}
+  .sv-fb-body{font-family:'Source Serif 4',Georgia,serif; font-size:clamp(14.5px,3vw,16.5px); line-height:1.55; color:#2a2a2a; margin:0;}
+  .sv-tryagain{font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:14px; margin:8px 0 0;}
+  .sv-tryagain.warn{color:var(--amberink);} .sv-tryagain.bad{color:var(--crimson);}
+
+  .sv-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;}
+  .sv-btn{font-family:'Inter',Arial,sans-serif; font-weight:700; font-size:15px; padding:12px 22px; border-radius:9px; border:2px solid var(--ink); background:#fff; color:var(--ink); cursor:pointer; transition:background .12s ease, color .12s ease;}
+  .sv-btn:hover{background:var(--ink); color:#fff;}
+  .sv-btn.sv-go{border-color:var(--green); background:var(--green); color:#fff;}
+  .sv-btn.sv-go:hover{background:#244a39;}
+  .sv-btn:focus-visible{outline:3px solid var(--green); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<div class="sv-wrap">
+  <p class="sv-kicker">Module 13 &middot; Service in Practice</p>
+  <p class="sv-lede">This work is a practice. Learn by doing.</p>
+  <p class="sv-intro">The next activity will assess where you are in your learning process. These are types of conversations that may come up at the activation site. Read what the person is carrying. Listen to what is really being asked. Then choose the response that keeps you in your lane and helps move the person through finding their pathway to the ballot box.</p>
+  <p class="sv-intro-2">If your response does not land or is not quite right, try again. This is part of the practice.</p>
+  <div class="sv-legend">
+    <span class="sv-leg"><span class="sv-swatch g"></span>Landed</span>
+    <span class="sv-leg"><span class="sv-swatch y"></span>Not quite</span>
+    <span class="sv-leg"><span class="sv-swatch r"></span>Could cause harm</span>
+  </div>
+
+  <div class="sv-card-shell" id="svShell"></div>
+</div>
+
+<script>
+/* ===== Service in Practice picker v2. Three-tier feedback. Dialogue VERBATIM from existing quiz questions. ===== */
+/* Each move: {text VERBATIM, tier 'green'|'yellow'|'red', fb}. Green fb = verbatim why. Yellow/red fb = framing. */
+var SV_PEOPLE = [
+  {
+    name:'Brother Blue', tease:'\u201cThe right candidate never wins\u2026 they don\u2019t care about Harlem.\u201d',
+    say:'I don\u2019t want to vote because the \u201cright\u201d candidate never wins. And the one who wins never does what they say they are going to do. They don\u2019t care about Harlem.',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'He\u2019s cynical, and he\u2019s daring you to argue.' },
+      { right:false, text:'He\u2019s asking who you\u2019re voting for.', why:'He didn\u2019t ask that. He\u2019s voicing why he\u2019s checked out.' },
+      { right:false, text:'He doesn\u2019t know how to register.', why:'Registration isn\u2019t the blocker here. His belief that it doesn\u2019t matter is.' }
+    ],
+    named:'He\u2019s cynical, not confused.',
+    moves:[
+      { text:'Wait until the General Election to vote. That\u2019s when the real election is.', tier:'red', fb:'That sends him off with wrong information. The June 23 primary matters, and \u201cwait\u201d reads like a brush-off.' },
+      { text:'Did you take a look at who is on the ballot this cycle? If you would like to register under a political party for the June 23 primary, we will be here next week.', tier:'green', fb:'Don\u2019t argue with the cynicism, don\u2019t minimize it, don\u2019t lecture about why to vote. Honor what they said, then inform: point them to who is on the ballot and offer a clear path to register for the June 23 primary, with no pressure, and let them know we will be here next week. The choice stays theirs.' },
+      { text:'That is exactly why you keep voting, to change things.', tier:'yellow', fb:'Good heart, but it argues with his cynicism instead of honoring it first.' },
+      { text:'If you don\u2019t want to register, I challenge you to bring a friend and register them to vote.', tier:'yellow', fb:'Well-meaning, but it sidesteps him and turns it into a dare.' }
+    ]
+  },
+  {
+    name:'Kennedy', tease:'His brother did seven years and is scared to vote.',
+    say:'My brother just came home from upstate. He did seven years. He violated his parole, and he has an ankle monitor. He is scared to go to the polls because he lost his ID.',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'He\u2019s eligible and scared. He needs the facts about his restored rights.' },
+      { right:false, text:'He has to finish parole before he can vote.', why:'Not in New York. Parole, probation, and supervision are all eligible since 2021.' },
+      { right:false, text:'The ankle monitor makes him ineligible.', why:'It doesn\u2019t affect eligibility at all. Don\u2019t add a barrier that isn\u2019t there.' }
+    ],
+    named:'He\u2019s eligible. He just doesn\u2019t know it yet.',
+    moves:[
+      { text:'He has to finish parole first, then wait a year before registering.', tier:'red', fb:'Not true in New York, and it keeps an eligible voter from the polls.' },
+      { text:'He can register and vote \u2014 New York restored voting rights on release. He must re-register, even if he was registered before he went in.', tier:'green', fb:'Parole, probation, and post-release supervision are all eligible under NY\u2019s 2021 re-enfranchisement law. The ankle monitor doesn\u2019t affect eligibility. Re-registration is required by law after a prison sentence.' },
+      { text:'He\u2019ll have to get a letter from the parole board first.', tier:'red', fb:'There\u2019s no such requirement. It invents a barrier that isn\u2019t there.' },
+      { text:'He can only vote in local elections \u2014 not federal.', tier:'red', fb:'Also untrue. His rights are fully restored.' }
+    ]
+  },
+  {
+    name:'Khalif', tease:'She already mailed it in and wants to vote again.', safety:true,
+    say:'I got my mail-in ballot in the wrong language. I tried my best but I think I voted for the wrong candidate. I already mailed it in. I want to go to my polling site on Election Day and vote again \u2014 for real this time.',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'He\u2019s about to break the law by accident. Be straight first.' },
+      { right:false, text:'He just needs language help next time.', why:'That matters later. First, he\u2019s about to vote twice, which is a felony.' },
+      { right:false, text:'His first vote didn\u2019t really count.', why:'Once a mail ballot is in, it counts. That\u2019s exactly why a second vote is the danger.' }
+    ],
+    named:'He doesn\u2019t realize voting twice is illegal.',
+    moves:[
+      { text:'Yes \u2014 go vote in person and get language assistance this time.', tier:'red', fb:'That points him toward voting twice, which is a felony.' },
+      { text:'Bring the mail ballot stub with you and ask the poll workers if they can fix it.', tier:'red', fb:'Still steers him toward a second vote instead of telling him the truth.' },
+      { text:'Requesting to vote a second time is against the law, even by accident.', tier:'green', fb:'Voting twice in the same election is a felony \u2014 federal and NY state law \u2014 even if the first vote was a mistake. Once a mail ballot is in, it counts. The volunteer\u2019s first job is to be straight about the law, then help with next steps.' },
+      { text:'Report it to NYC Board of Elections so this is on the record, and let\u2019s plan for the next election.', tier:'yellow', fb:'Right spirit, but it skips the first job: be straight that the first vote already counts.' }
+    ]
+  },
+  {
+    name:'Kquonajah', tease:'\u201cNo offense, but why are y\u2019all even out here?\u201d',
+    say:'I don\u2019t want to vote this year. None of the candidates is speaking to my concerns as a resident who can\u2019t afford affordable housing. I\u2019m tired of voting, and no one is listening. No offense, but I don\u2019t even know why y\u2019all are out here.',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'They asked a real question: why are you out here. Answer that.' },
+      { right:false, text:'They want you to recommend the best housing candidate.', why:'Comparing candidates is out of your lane, and it\u2019s not what they asked.' },
+      { right:false, text:'They want to be sent to a community board meeting.', why:'Don\u2019t send them on an errand. They asked you a direct question.' }
+    ],
+    named:'They asked why you\u2019re out here. Answer it.',
+    moves:[
+      { text:'We are out here because we know historically when we stop voting, then it makes it easier for them to ignore our needs.', tier:'green', fb:'Honor what they said by answering what they actually asked \u2014 \u201cwhy are y\u2019all out here?\u201d \u2014 without dismissing their frustration. Name a historical truth in our voice without comparing candidates, without sharing opinions, and without sending them on errands.' },
+      { text:'I know that\u2019s right. The rent is too high. Oh, that was the best campaign.', tier:'red', fb:'That echoes a campaign slogan. We stay out of endorsing or comparing candidates.' },
+      { text:'Maybe you should join the community board \u2014 they have a housing committee, and start going to the meetings.', tier:'yellow', fb:'Kind, but it sends them on an errand instead of answering what they asked.' },
+      { text:'Did you check to see which candidates have the strongest housing campaign?', tier:'red', fb:'Comparing candidates is out of our lane.' }
+    ]
+  },
+  {
+    name:'Queen', tease:'A relative is pressuring her over a turkey.',
+    say:'(elder voter, to a relative pressuring her) That\u2019s okay, I\u2019ll take my Access-A-Ride. [The younger relative just said: \u201cJust because he came to your church doesn\u2019t mean you should vote for him. I will not be taking you to the polls if you vote for who gave you an extra turkey.\u201d]',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'Her relative is pressuring her. Protect her autonomy, don\u2019t take sides.' },
+      { right:false, text:'It\u2019s a transportation problem to solve.', why:'She already solved it herself with Access-A-Ride. Respect that.' },
+      { right:false, text:'It\u2019s a family argument for you to settle.', why:'Not your role. Affirm her right to choose without escalating the conflict.' }
+    ],
+    named:'She\u2019s being pressured. Her vote is hers.',
+    moves:[
+      { text:'They ran out of turkeys this year so I understand.', tier:'yellow', fb:'Playful, but it skips right past her right to choose.' },
+      { text:'It sounds like we gonna have to work on getting you an Uber. Uber offers free rides to the polls.', tier:'yellow', fb:'She already solved her ride. This misses what\u2019s really happening.' },
+      { text:'You have time to request a ballot and mail it in.', tier:'yellow', fb:'A process answer that steps over the pressure she\u2019s under.' },
+      { text:'If that is who you want to vote for, vote.', tier:'green', fb:'Her vote is hers. This affirms her autonomy in plain language, in front of the relative who was trying to pressure her, without escalating the family conflict or taking sides. The elder already solved her own transportation problem \u2014 respect that.' }
+    ]
+  },
+  {
+    name:'Maribelle', tease:'\u201cI don\u2019t have any documents on me.\u201d', safety:true,
+    say:'I think I\u2019m a citizen \u2014 my parents got naturalized when I was a kid, and I\u2019ve lived here my whole life. I don\u2019t have any documents on me.',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'She\u2019s unsure of her status. Box 1 cannot be guessed.' },
+      { right:false, text:'Derivative citizenship covers her, so it\u2019s fine.', why:'You cannot assume that. Guessing \u201cyes\u201d on citizenship can be catastrophic for her.' },
+      { right:false, text:'Submit it blank and let the Board sort it out.', why:'Never submit a citizenship question you can\u2019t answer truthfully. The stakes are too high.' }
+    ],
+    named:'Her status is unconfirmed. Do not guess Box 1.',
+    moves:[
+      { text:'Go ahead and check \u201cYes\u201d on Box 1 \u2014 derivative citizenship covers you.', tier:'red', fb:'Never reassure someone into a \u201cyes\u201d on citizenship. The stakes are criminal.' },
+      { text:'Leave Box 1 blank and submit the form anyway \u2014 the Board of Elections will follow up.', tier:'red', fb:'Don\u2019t submit a citizenship answer you can\u2019t confirm.' },
+      { text:'Come back any time once you\u2019ve confirmed your status. Here\u2019s Harlem Legal Services NYC \u2014 they offer free help with derivative citizenship cases.', tier:'green', fb:'Box 1 cannot be guessed. A wrong \u201cyes\u201d can mean criminal charges, deportation, and a permanent bar from naturalization. We never reassure someone into a yes.' },
+      { text:'Have someone in your family vouch for it and write that on the form.', tier:'red', fb:'That\u2019s not how citizenship is verified, and it puts her at risk.' }
+    ]
+  },
+  {
+    name:'J\u2019Ador\u00e9', safety:true,
+    say:'(a teen at the table) I want to fill out the form. I turn 18 on Juneteenth, so I can pre-register, right? Oh, can you airdrop me the link real quick?',
+    readPrompt:'What\u2019s really going on?',
+    read:[
+      { right:true,  text:'She can pre-register, and she\u2019s asking for a private contact. Keep it public.' },
+      { right:false, text:'She\u2019s too young to do anything yet.', why:'Not true. A 16 or 17 year old can pre-register. Don\u2019t turn her away.' },
+      { right:false, text:'She just needs help with the paper form.', why:'She asked for the link. The real question is how you share it with a minor.' }
+    ],
+    named:'She can pre-register. Keep the contact public.',
+    moves:[
+      { text:'Sure. Oh wait, did you get it? Never mind, take my phone and text me, with your name, and I will text the link back.', tier:'red', fb:'Never exchange numbers or hand a minor your phone. That opens a private channel, a line we do not cross.' },
+      { text:'Oh, the link is easy, you can write it in your notes. Here, I will type it for you.', tier:'red', fb:'Do not handle a young person\u2019s phone. Point to the public resource and let her do it herself.' },
+      { text:'Here is the QR code for you to access all of your voter registration questions and the online forms. Do you want me to show you where the forms are on the website?', tier:'green', fb:'Do not exchange personal numbers, handle the young person\u2019s phone, or create a private follow-up contact. Use the official public resources: websites, social media platforms, telephone numbers, QR codes, etc. Keep the interaction public, brief, and appropriate, with the above, at the activation site. A private channel between a volunteer and a minor is a line we do not cross, for her protection and yours. Our coalition should not be associated with any personal or private interactions involving minors.' },
+      { text:'Yes, once you get the link, share it with your friends and stay in touch. I am here for you. You have my number in case you have a problem at the polls. Call me.', tier:'red', fb:'No private follow-up with a minor, no \u201ccall me,\u201d no ongoing personal contact. Keep it public and appropriate.' }
+    ]
+  }
+];
+
+var svDone = {};
+var svCur = -1;
+
+function svPicker(){
+  svCur=-1;
+  var done=Object.keys(svDone).length;
+  var html=''
+    + '<div class="sv-pickhead"><h4>Who do you want to practice with?</h4>'
+    + '<span class="sv-count">'+done+' of '+SV_PEOPLE.length+' practiced</span></div>'
+    + '<div class="sv-grid">';
+  for(var i=0;i<SV_PEOPLE.length;i++){
+    var p=SV_PEOPLE[i];
+    html += '<button type="button" class="sv-person'+(svDone[i]?' sv-donep':'')+'" onclick="svOpen('+i+')">'
+      + (svDone[i]?'<span class="sv-donecheck">&#10003;</span>':'')
+      + '<p class="sv-pname">'+p.name+'</p>'
+      + '<p class="sv-ptease">At the table</p>'
+      + '</button>';
+  }
+  html += '</div>';
+  document.getElementById('svShell').innerHTML=html;
+}
+
+function svScene(i){
+  var p=SV_PEOPLE[i];
+  return '<button class="sv-back" onclick="svPicker()">&larr; Pick someone else</button>'
+    + '<div class="sv-scene"><span class="sv-who">'+p.name.charAt(0)+'</span><p class="sv-say">'+p.say+'</p></div>';
+}
+
+function svOpen(i){
+  svCur=i;
+  var p=SV_PEOPLE[i];
+  var html=svScene(i)
+    + '<div class="sv-step"><span class="sv-stepnum">1</span><span class="sv-steplabel">Read it &middot; '+p.readPrompt+'</span></div>'
+    + '<div class="sv-opts" id="svOpts">';
+  for(var r=0;r<p.read.length;r++){
+    html += '<button type="button" class="sv-opt" id="svRead'+r+'" onclick="svPickRead('+r+')"><span class="sv-txt">'+p.read[r].text+'</span></button>';
+  }
+  html += '</div><div class="sv-feedback" id="svFeedback" aria-live="polite"></div><div class="sv-actions" id="svActions"></div>';
+  document.getElementById('svShell').innerHTML=html;
+}
+
+function svFeedback(tier,title,body,tryLabel){
+  var inner='sv-fb-inner', tcls='', tacls='';
+  if(tier==='yellow'){ inner+=' sv-fb-warn'; tcls=' sv-t-warn'; tacls='warn'; }
+  if(tier==='red'){ inner+=' sv-fb-bad'; tcls=' sv-t-bad'; tacls='bad'; }
+  var fb=document.getElementById('svFeedback');
+  fb.innerHTML='<div class="'+inner+'"><p class="sv-fb-title'+tcls+'">'+title+'</p><p class="sv-fb-body">'+body+'</p>'+(tryLabel?'<p class="sv-tryagain '+tacls+'">'+tryLabel+'</p>':'')+'</div>';
+  fb.className='sv-feedback sv-show';
+}
+
+function svPickRead(r){
+  var p=SV_PEOPLE[svCur];
+  var item=p.read[r];
+  var btn=document.getElementById('svRead'+r);
+  if(item.right){
+    var html=svScene(svCur)
+      + '<div class="sv-step"><span class="sv-stepnum sv-done">&#10003;</span><span class="sv-steplabel">Read it &middot; you read her right</span></div>'
+      + '<p class="sv-named"><span class="sv-tick">&#10003;</span>'+p.named+'</p>'
+      + '<div class="sv-step"><span class="sv-stepnum">2</span><span class="sv-steplabel">Move &middot; what do you say?</span></div>'
+      + '<div class="sv-opts" id="svOpts">';
+    for(var k=0;k<p.moves.length;k++){
+      html += '<button type="button" class="sv-opt" id="svMove'+k+'" onclick="svPickMove('+k+')"><span class="sv-txt">'+p.moves[k].text+'</span></button>';
+    }
+    html += '</div><div class="sv-feedback" id="svFeedback" aria-live="polite"></div><div class="sv-actions" id="svActions"></div>';
+    document.getElementById('svShell').innerHTML=html;
+  } else {
+    // a wrong read is never harmful, so it reads yellow: look again
+    btn.classList.add('sv-warn'); btn.disabled=true;
+    svFeedback('yellow','Read it again.',item.why,'Try again.');
+  }
+}
+
+function svPickMove(k){
+  var p=SV_PEOPLE[svCur];
+  var m=p.moves[k];
+  var btn=document.getElementById('svMove'+k);
+  if(m.tier==='green'){
+    btn.classList.add('sv-good');
+    var opts=document.getElementById('svOpts');
+    var all=opts.querySelectorAll('.sv-opt'); for(var a=0;a<all.length;a++){ all[a].onclick=null; }
+    svFeedback('green','That landed.',m.fb,'');
+    svDone[svCur]=true;
+    var doneAll=(Object.keys(svDone).length===SV_PEOPLE.length);
+    document.getElementById('svActions').innerHTML=
+      '<button class="sv-btn sv-go" onclick="svPicker()">'+(doneAll?'You\u2019ve sat with everyone. Back to the table':'Practice another person')+'</button>';
+  } else if(m.tier==='yellow'){
+    btn.classList.add('sv-warn'); btn.disabled=true;
+    svFeedback('yellow','Close. It didn\u2019t quite land.',m.fb,'You\u2019re almost there. Try again.');
+  } else {
+    btn.classList.add('sv-bad'); btn.disabled=true;
+    svFeedback('red','Careful. This one can cause harm.',m.fb,'Try again.');
+  }
+}
+
+svPicker();
+</script>
+</body>
+</html>
