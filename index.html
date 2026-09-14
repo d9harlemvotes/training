@@ -3199,13 +3199,6 @@ const MODULES = [
     quiz: []
   },
     {
-    isClosing: true,
-    id: 'closing',
-    title: 'Opening Reflection',
-    bubble: 'iv',
-    quiz: []
-  },
-    {
     phaseStart: 'Unit 1 \u00b7 Mission Minded',
     id: 'whoweare',
     title: 'Mission Minded',
@@ -6165,10 +6158,7 @@ function renderContent() {
     return;
   }
 
-  if (m.isClosing) {
-    renderClosingView(m);
-    return;
-  }
+
   if (m.isCredits) {
     renderCreditsView(m);
     return;
@@ -6643,59 +6633,6 @@ function renderCreditsView(m) {
       window.scrollTo({ top: 0 });
     }
   };
-}
-
-function renderClosingView(m) {
-  const content = document.getElementById('content');
-  const here = MODULES.indexOf(m);
-  content.innerHTML = `
-    <div style="max-width:720px; margin:0 auto; color:#1A1A1A;">
-      <div style="font-family:'Inter',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#CB0606; margin:0 0 14px; text-align:center;">A Word Before You Begin</div>
-      <h1 class="serif" style="font-size:40px; font-weight:700; text-align:center; margin:0 0 48px; line-height:1.12;">Opening Reflection</h1>
-      <blockquote style="position: relative; margin: 0 auto; max-width:680px; padding: 52px 44px 44px 74px; overflow: hidden;">
-        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; display: flex;"><div style="flex: 1; background: #CB0606;"></div><div style="flex: 1; background: #1A1A1A;"></div><div style="flex: 1; background: #2F5F48;"></div></div><div style="position: absolute; top: 0; bottom: 0; left: 0; width: 4px; display: flex; flex-direction: column;"><div style="flex: 1; background: #CB0606;"></div><div style="flex: 1; background: #1A1A1A;"></div><div style="flex: 1; background: #2F5F48;"></div></div><div style="position: absolute; top: 0; bottom: 0; right: 0; width: 4px; display: flex; flex-direction: column;"><div style="flex: 1; background: #CB0606;"></div><div style="flex: 1; background: #1A1A1A;"></div><div style="flex: 1; background: #2F5F48;"></div></div><div style="position: absolute; bottom: 0; left: 0; right: 0; height: 4px; display: flex;"><div style="flex: 1; background: #CB0606;"></div><div style="flex: 1; background: #1A1A1A;"></div><div style="flex: 1; background: #2F5F48;"></div></div>
-        <span style="position: absolute; top: 18px; left: 24px; font-family: Georgia, serif; font-size: 84px; line-height: 1; color: #CB0606; font-weight: 700;">&ldquo;</span>
-        <p style="font-family: 'Source Serif 4', Georgia, serif; font-size: 24px; line-height: 1.55; font-style: italic; color: #1A1A1A; margin: 10px 0 22px;">Family, there are groups that invest in making sure our communities don&rsquo;t participate in civic process, that entice you to volunteer to give up your rights, that fool you into thinking you don&rsquo;t matter. They don&rsquo;t want you in power. Don&rsquo;t give up your power. Exercise your right. Use your voice. Vote.</p>
-        <p style="font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #1A1A1A; margin: 0;">&mdash; Lisa White-Tingling, MPA, Steering Committee Member, D9 Harlem Votes&trade;</p>
-      </blockquote>
-      <div style="max-width:620px; margin:36px auto 0; background:#F7F7F7; border:1px solid #E2E2E2; border-radius:10px; padding:22px 24px; text-align:left;">
-        <p style="font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#CB0606; margin:0 0 8px;">Before you begin</p>
-        <p style="font-family:'Source Serif 4',Georgia,serif; font-size:18px; color:#1A1A1A; margin:0 0 14px;">How prepared do you feel to serve as a D9 Harlem Votes&trade; volunteer today?</p>
-        <div id="readyStartGroup" style="display:flex; flex-direction:column; gap:10px;">
-          ${['Very prepared','Mostly prepared','Somewhat prepared','Not yet prepared'].map(function(opt){
-            const sel = state.readinessStart === opt;
-            return '<label style="display:flex; align-items:center; gap:10px; font-family:Inter,sans-serif; font-size:16px; color:#1A1A1A; cursor:pointer;"><input type="radio" name="readyStart" value="'+opt+'"'+(sel?' checked':'')+' style="width:18px; height:18px; accent-color:#2F5F48; cursor:pointer;"> '+opt+'</label>';
-          }).join('')}
-        </div>
-        <p style="font-family:'Inter',sans-serif; font-size:13px; color:#8a8a8a; margin:14px 0 0;">We will ask again at the end to see how the training helped.</p>
-        <div style="border-top:1px solid #E2E2E2; margin:20px 0 0; padding-top:18px;">
-          <p style="font-family:'Source Serif 4',Georgia,serif; font-size:18px; color:#1A1A1A; margin:0 0 14px;">Right now, what role do you expect to play with D9 Harlem Votes&trade;?</p>
-          <div id="roleStartGroup" style="display:flex; flex-direction:column; gap:10px;">
-            ${['Table volunteer','Activation Lead','Canvassing / outreach','Voter registration support','Poll-site support / voter guidance','Data / tracker support','I am not sure yet','Other'].map(function(opt){
-              const sel = state.roleStart === opt;
-              return '<label style="display:flex; align-items:center; gap:10px; font-family:Inter,sans-serif; font-size:16px; color:#1A1A1A; cursor:pointer;"><input type="radio" name="roleStart" value="'+opt+'"'+(sel?' checked':'')+' style="width:18px; height:18px; accent-color:#2F5F48; cursor:pointer;"> '+opt+'</label>';
-            }).join('')}
-          </div>
-          <p style="font-family:'Inter',sans-serif; font-size:13px; color:#8a8a8a; margin:14px 0 0;">We will ask again at the end to see if it changed.</p>
-        </div>
-      </div>
-      <div class="nav-row" style="margin-top:52px;">
-        <button class="nav-btn prev" id="clBack">&larr; Back</button>
-        <button class="nav-btn" id="clNext">Start Training &rarr;</button>
-      </div>
-    </div>`;
-  const rg = document.getElementById('readyStartGroup');
-  if (rg) {
-    rg.addEventListener('change', function(e){ if(e.target && e.target.name==='readyStart'){ state.readinessStart = e.target.value; try{ saveState(); }catch(err){} } });
-  }
-  const rsg = document.getElementById('roleStartGroup');
-  if (rsg) {
-    rsg.addEventListener('change', function(e){ if(e.target && e.target.name==='roleStart'){ state.roleStart = e.target.value; try{ saveState(); }catch(err){} } });
-  }
-  const back=document.getElementById('clBack');
-  const next=document.getElementById('clNext');
-  if (back) back.onclick=function(){ if(here>0){ state.current=here-1; renderAll(); window.scrollTo({top:0}); } };
-  if (next) next.onclick=function(){ if(here<MODULES.length-1){ state.current=here+1; renderAll(); window.scrollTo({top:0}); } };
 }
 
 function completionBannerHTML(m){
@@ -8865,7 +8802,7 @@ function railLabelFor(i) {
   if (m.isFinal) return 'the Final Check';
   if (m.isOverview) return 'the Overview';
   if (m.isCredits) return 'Credits';
-  if (m.isClosing) return 'the Opening Reflection';
+
   if (m.kicker) return m.kicker;
   return m.title || 'where you left off';
 }
